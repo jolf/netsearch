@@ -1,0 +1,25 @@
+@import 'bootstrap-sprockets';
+
+@import 'bootstrap';
+
+@import 'blacklight/blacklight';
+
+.navbar-right {
+  display: none;
+}
+
+.modal-dialog {
+  z-index: 1050;
+}
+
+.toggle_bookmark {
+  display: none;
+}
+
+.input-group-addon {
+  display: none;
+}
+
+.pagination {
+  display: none;
+}
