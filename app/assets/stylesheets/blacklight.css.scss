@@ -8,8 +8,14 @@
   display: none;
 }
 
+/* Setting the modal dialog box with a higher index than the modal backdrop. */
 .modal-dialog {
   z-index: 1050;
+}
+
+
+.glyphicon-remove {
+  visibility: visible !important;
 }
 
 .toggle_bookmark {
