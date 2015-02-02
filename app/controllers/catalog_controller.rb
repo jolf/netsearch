@@ -120,7 +120,6 @@ class CatalogController < ApplicationController
     # Decodes the id: '/' transformed from '&#47;'
     id = params[:id].gsub('&#47;', '/')
     @response, @document = get_solr_response_for_doc_id id, {:q => "id:#{id}"}
-    puts "Document keys: #{@document.keys}"
     respond_to do |format|
       format.html {setup_next_and_previous_documents}
       format.json { render json: {response: {document: @document}}}
