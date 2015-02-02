@@ -7,9 +7,9 @@ class CatalogController < ApplicationController
 
   configure_blacklight do |config|
     # keys in {} will be substituted by the value from looking up the key in the current document
-    # if key is in [] the value will be url encoded before being inserted
-    #config.wayback_url = 'http://elara.statsbiblioteket.dk/wayback/{wayback_date}/{url}'
-    config.wayback_url = 'http://kb-test-way-001.kb.dk:8080/jsp/QueryUI/Redirect.jsp?url=[url]&time=[wayback_date]'
+    # if key is in [] the value will be url encoded before being inserted. Example:
+    #  config.wayback_url = 'http://elara.statsbiblioteket.dk/wayback/{wayback_date}/{url}'
+    config.wayback_url = WAYBACK_CONFIG['base_url'] #'http://kb-test-way-001.kb.dk:8080/jsp/QueryUI/Redirect.jsp?url=[url]&time=[wayback_date]'
 
     ## Default parameters to send to solr for all search-like requests. See also SolrHelper#solr_search_params
     config.default_solr_params = { 

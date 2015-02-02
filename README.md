@@ -1,6 +1,14 @@
-# Blacklight
+# NetSearch Blacklight
 
-This is a very simple [Blacklight](http://projectblacklight.org/) installation to search the netarchive.
+A simple Blacklight interface for the Full Text Search for the danish webarchive: [Netarkivet.dk](http://netarkivet.dk)
+
+Requires a setup where the harvested webpages are indexed in SOLR and with a Wayback for dissemination.
+
+For more on these see:
+- [Blacklight](http://projectblacklight.org/)
+- [SOLR](http://lucene.apache.org/solr/)
+- [Wayback](https://archive.org/web/)
+
 
 ## Prerequisites
 Needs Ruby 1.9 or newer, Rails 4 (or 3.2) and sqlite3 with development headers installed as necessary. Also needs a javascript interpreter supported by Ruby - nodejs should do fine.
@@ -39,25 +47,11 @@ rake db:migrate
 
 That should install all the needed parts for Blacklight and setup its database.
 
-Edit `config/solr.yml` to point to your Netarchive Solr instance.
-
 Now to run the server do `rails server` and open [http://localhost:3000/](http://localhost:3000/)
 
 ## Configuration
-Configuration of fields and facets to be shown, Solr params, etc. can be found in `app/controllers/catalog_controller.rb`.
+The following documents should be edited 
 
-Individual methods can be overwritten in `app/helpers/blacklight_helper.rb` (as has for instance been done with `link_to_document`in order to make it point to our Wayback instance).
+- `config/solr.yml` to point to your Netarchive Solr instance.
+- `config/wayback.yml` to point to your Wayback machine, and define the URL/date format.
 
-Read more about [configuring Blacklight](https://github.com/projectblacklight/blacklight/wiki/Blacklight-configuration)
-
-## TODO
-- [x] Simplify config
-- [x] Cleanup unneeded things from templates
-  - [x] Bookmarks (hidden in CSS)
-  - [ ] Sort dropdown
-  - [x] Search field dropdown (hidden in CSS)
-  - [x] Login (hidden in CSS)
-  - [x] History (hidden in CSS)
-- [x] Adjust logo
-- [x] Hit highlighting on the content_text field
-- [ ] Some form of grouping on url (see notes in `app/controllers/catalog_controller.rb`)
