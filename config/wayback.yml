@@ -1,5 +1,6 @@
 development:
-  base_url: 'http://kb-test-way-001.kb.dk:8080/jsp/QueryUI/Redirect.jsp?url=[url]&time=[wayback_date]' 
+  #base_url: 'http://kb-test-way-001.kb.dk:8080/jsp/QueryUI/Redirect.jsp?url=[url]&time=[wayback_date]' 
+  base_url: 'http://kb-prod-way-001.kb.dk:8081/jsp/QueryUI/Redirect.jsp?url=[url]&time=[wayback_date]' 
 test:
   base_url: 'http://localhost/wayback/{wayback_date}/{url}'
 production:
