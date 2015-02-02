@@ -76,6 +76,30 @@ class CatalogController < ApplicationController
     # "fielded" search configuration. Used by pulldown among other places.
     config.add_search_field 'all_fields', :label => 'All Fields'
     
+    config.add_search_field('text', :label => 'Text') do |field|
+      field.solr_parameters = { :'spellcheck.dictionary' => 'text' }
+      field.solr_local_parameters = { 
+        :qf => '$text_qf',
+        :pf => '$text_pf'
+      }
+    end
+
+    config.add_search_field('url', :label => 'URL') do |field|
+      field.solr_parameters = { :'spellcheck.dictionary' => 'url' }
+      field.solr_local_parameters = { 
+        :qf => '$url_qf',
+        :pf => '$url_pf'
+      }
+    end
+
+    config.add_search_field('links', :label => 'Links') do |field|
+      field.solr_parameters = { :'spellcheck.dictionary' => 'links' }
+      field.solr_local_parameters = { 
+        :qf => '$links_qf',
+        :pf => '$links_pf'
+      }
+    end
+
     # Now we see how to over-ride Solr request handler defaults, in this
     # case for a BL "search field", which is really a dismax aggregate
     # of Solr search fields. 

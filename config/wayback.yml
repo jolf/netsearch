@@ -3,4 +3,4 @@ development:
 test:
   base_url: 'http://localhost/wayback/{wayback_date}/{url}'
 production:
-  base_url: 'http://elara.statsbiblioteket.dk/wayback/{wayback_date}/{url}'
+  base_url: 'http://kb-prod-way-001.kb.dk:8081/jsp/QueryUI/Redirect.jsp?url=[url]&time=[wayback_date]' 
