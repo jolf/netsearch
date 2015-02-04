@@ -18,7 +18,6 @@ module ApplicationHelper
     link_to short_url, url
   end
 
-
   def get_id_show_link args
     id = args[:document][args[:field]]
 
@@ -27,6 +26,11 @@ module ApplicationHelper
     # (e.g. id = '20110224111443/jcIZ7TNodzqOtB2rez8/Ug==' will have paths: '20110224111443' -> 'jcIZ7TNodzqOtB2rez8' -> 'Ug=='
     # where it is encoded as: id = '20110224111443&%2347;jcIZ7TNodzqOtB2rez8&%2347;Ug==', which just needs to be decoded when received.
     link_to id, catalog_path(id.gsub('/', '&#47;'))
+  end
+
+  def get_wayback_link args
+    url = get_wayback_url(args[:document])
+    link_to url, url
   end
 
 end

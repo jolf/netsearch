@@ -6,10 +6,11 @@
       <dd class="blacklight-<%= solr_fname.parameterize %>"><%= render_document_show_field_value document, :field => solr_fname %></dd>
     <% end -%>
   <% end -%>
+  <br/>
   <% @document.each do |solr_fname, value| -%>
-    <% unless document_show_fields(document).keys.include?(solr_fname) %>
+    <% #unless document_show_fields(document).keys.include?(solr_fname) %>
       <dt class="blacklight-<%= solr_fname.parameterize %>"><%= solr_fname %></dt>
       <dd class="blacklight-<%= solr_fname.parameterize %>"><%= value %></dd>
-    <% end -%>
+    <% #end -%>
   <% end -%>
 </dl>

@@ -50,9 +50,10 @@ class CatalogController < ApplicationController
     config.add_facet_field 'crawl_year', :label => 'Crawl Year', :range => true, :single => true, sort: 'index', solr_params: { 'facet.mincount' => 1 }
     config.add_facet_field 'domain', :label => 'Domain', :single => true, :limit => 10, solr_params: { 'facet.mincount' => 1 } 
     config.add_facet_field 'content_type_norm', :label => 'Content Type', :single => true, :limit => 10, solr_params: { 'facet.mincount' => 1 } 
-    config.add_facet_field 'host', :label => 'Host', :limit => 10, :single => true, solr_params: { 'facet.mincount' => 1 }
+    config.add_facet_field 'content_type', :label => 'Mimetype', :single => true, :limit => 10, solr_params: { 'facet.mincount' => 1 } 
+#    config.add_facet_field 'host', :label => 'Host', :limit => 10, :single => true, solr_params: { 'facet.mincount' => 1 }
     config.add_facet_field 'public_suffix', :label => 'Public Suffix', :single => true, :limit => 10, solr_params: { 'facet.mincount' => 1 }
-    config.add_facet_field 'url', :label => 'URL', :single => true, :limit => 10, solr_params: { 'facet.mincount' => 1 }
+#    config.add_facet_field 'url', :label => 'URL', :single => true, :limit => 10, solr_params: { 'facet.mincount' => 1 }
 
     # Have BL send all facet field names to Solr, which has been the default
     # previously. Simply remove these lines if you'd rather use Solr request
@@ -63,7 +64,7 @@ class CatalogController < ApplicationController
     # The ordering of the field names is the order of the display 
     config.add_index_field 'id', :label => 'Complete index', :helper_method => :get_id_show_link
     config.add_index_field 'content_type', :label => 'MimeType'
-    config.add_index_field 'content_type_norm', :label => 'Content Type'
+    config.add_index_field 'content_type_full', :label => 'Full Content Type'
     config.add_index_field 'crawl_date', :label => 'Crawl Date'
     config.add_index_field 'content_text', :label => 'Content', :helper_method => :get_simple_context_text
     config.add_index_field 'domain', :label => 'Domain'
@@ -71,7 +72,10 @@ class CatalogController < ApplicationController
 
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display 
+    config.add_show_field 'crawl_year', :label => 'Wayback URL', :helper_method => :get_wayback_link
     config.add_show_field 'title', :label => 'Title'
+    config.add_show_field 'crawl_date', :label => 'Crawl Date'
+    config.add_show_field 'url', :label => 'Harvested URL'
 
     # "fielded" search configuration. Used by pulldown among other places.
     config.add_search_field 'all_fields', :label => 'All Fields'
@@ -84,7 +88,7 @@ class CatalogController < ApplicationController
       }
     end
 
-    config.add_search_field('url', :label => 'URL') do |field|
+    config.add_search_field('url', :label => 'URL/domain') do |field|
       field.solr_parameters = { :'spellcheck.dictionary' => 'url' }
       field.solr_local_parameters = { 
         :qf => '$url_qf',
