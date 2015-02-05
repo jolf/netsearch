@@ -33,7 +33,7 @@ class CatalogController < ApplicationController
     }
     
     # solr path which will be added to solr base url before the other solr params.
-#    config.solr_path = 'edismax' 
+    # config.solr_path = 'edismax' 
     
     # items to show per page, each number in the array represent another option to choose from.
     config.per_page = [10,20,50,100]
