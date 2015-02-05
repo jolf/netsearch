@@ -15,6 +15,7 @@ class CatalogController < ApplicationController
     config.default_solr_params = { 
       :qt => 'search',
       :rows => 10, 
+      :defType => 'edismax',
       
 #      :hl => true,
 #      :'hl.field' => 'content_text'
@@ -50,7 +51,7 @@ class CatalogController < ApplicationController
     config.add_facet_field 'crawl_year', :label => 'Crawl Year', :range => true, :single => true, sort: 'index', solr_params: { 'facet.mincount' => 1 }
     config.add_facet_field 'domain', :label => 'Domain', :single => true, :limit => 10, solr_params: { 'facet.mincount' => 1 } 
     config.add_facet_field 'content_type_norm', :label => 'Content Type', :single => true, :limit => 10, solr_params: { 'facet.mincount' => 1 } 
-    config.add_facet_field 'content_type', :label => 'Mimetype', :single => true, :limit => 10, solr_params: { 'facet.mincount' => 1 } 
+#    config.add_facet_field 'content_type', :label => 'Mimetype', :single => true, :limit => 10, solr_params: { 'facet.mincount' => 1 } 
 #    config.add_facet_field 'host', :label => 'Host', :limit => 10, :single => true, solr_params: { 'facet.mincount' => 1 }
     config.add_facet_field 'public_suffix', :label => 'Public Suffix', :single => true, :limit => 10, solr_params: { 'facet.mincount' => 1 }
 #    config.add_facet_field 'url', :label => 'URL', :single => true, :limit => 10, solr_params: { 'facet.mincount' => 1 }
@@ -78,29 +79,34 @@ class CatalogController < ApplicationController
     config.add_show_field 'url', :label => 'Harvested URL'
 
     # "fielded" search configuration. Used by pulldown among other places.
-    config.add_search_field 'all_fields', :label => 'All Fields'
+    config.add_search_field 'all_fields', :label => 'All Fields' do |field|
+      field.solr_local_parameters = { 
+        :qf => 'title^100 content_text^10 url^3 text',
+        :pf => 'title^100 content_text^10 url^3 text'
+      }
+    end
     
     config.add_search_field('text', :label => 'Text') do |field|
       field.solr_parameters = { :'spellcheck.dictionary' => 'text' }
       field.solr_local_parameters = { 
-        :qf => '$text_qf',
-        :pf => '$text_pf'
+        :qf => 'title^5 content_text',
+        :pf => 'title^5 content_text'
       }
     end
 
     config.add_search_field('url', :label => 'URL/domain') do |field|
       field.solr_parameters = { :'spellcheck.dictionary' => 'url' }
       field.solr_local_parameters = { 
-        :qf => '$url_qf',
-        :pf => '$url_pf'
+        :qf => 'url^2 domain',
+        :pf => 'url^2 domain'
       }
     end
 
     config.add_search_field('links', :label => 'Links') do |field|
       field.solr_parameters = { :'spellcheck.dictionary' => 'links' }
       field.solr_local_parameters = { 
-        :qf => '$links_qf',
-        :pf => '$links_pf'
+        :qf => 'links_hosts links_domains',
+        :pf => 'links_hosts links_domains'
       }
     end
 
