@@ -17,11 +17,11 @@ module BlacklightHelper
       title = doc['url']
     end
 
-    link_to title, url
+    link_to title, url , :target => "_blank"
   end
 
   def get_wayback_url(doc)
-     waybackBaseURL = blacklight_config.wayback_url || doc['url']
+    waybackBaseURL = blacklight_config.wayback_url || doc['url']
 
     # run through all keys in the configured URL and replace them
     # with values from the current document 

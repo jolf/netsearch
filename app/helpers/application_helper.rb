@@ -30,7 +30,7 @@ module ApplicationHelper
 
   def get_wayback_link args
     url = get_wayback_url(args[:document])
-    link_to url, url
+    link_to url, url, :target => "_blank"
   end
 
 end
