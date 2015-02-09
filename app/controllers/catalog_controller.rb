@@ -48,14 +48,10 @@ class CatalogController < ApplicationController
 
     # solr fields that will be treated as facets by the blacklight application
     # The ordering of the field names is the order of the display
-    #config.add_facet_field 'crawl_year', :label => 'Crawl Year', :range => true, :single => true, sort: 'index', solr_params: { 'facet.mincount' => 1 }
     config.add_facet_field 'crawl_year', :label => 'Crawl Year', :single => true, sort: 'index', solr_params: { 'facet.mincount' => 1 }
     config.add_facet_field 'domain', :label => 'Domain', :single => true, :limit => 10, solr_params: { 'facet.mincount' => 1 } 
     config.add_facet_field 'content_type_norm', :label => 'Content Type', :single => true, :limit => 10, solr_params: { 'facet.mincount' => 1 } 
-#    config.add_facet_field 'content_type', :label => 'Mimetype', :single => true, :limit => 10, solr_params: { 'facet.mincount' => 1 } 
-#    config.add_facet_field 'host', :label => 'Host', :limit => 10, :single => true, solr_params: { 'facet.mincount' => 1 }
     config.add_facet_field 'public_suffix', :label => 'Public Suffix', :single => true, :limit => 10, solr_params: { 'facet.mincount' => 1 }
-#    config.add_facet_field 'url', :label => 'URL', :single => true, :limit => 10, solr_params: { 'facet.mincount' => 1 }
 
     # Have BL send all facet field names to Solr, which has been the default
     # previously. Simply remove these lines if you'd rather use Solr request
@@ -82,8 +78,8 @@ class CatalogController < ApplicationController
     # "fielded" search configuration. Used by pulldown among other places.
     config.add_search_field 'all_fields', :label => 'All Fields' do |field|
       field.solr_local_parameters = { 
-        :qf => 'title^100 content_text^10 url^3 text',
-        :pf => 'title^100 content_text^10 url^3 text'
+        :qf => 'title^100 content_text^10 url^3 text domain',
+        :pf => 'title^100 content_text^10 url^3 text domain'
       }
     end
     
@@ -144,8 +140,8 @@ class CatalogController < ApplicationController
     config.add_sort_field 'score desc', :label => 'relevance'
     config.add_sort_field 'crawl_date desc', :label => 'crawl date (decending)'
     config.add_sort_field 'crawl_date asc', :label => 'crawl date (ascending)'
-    config.add_sort_field 'url desc, crawl_date desc', :label => 'URL (decending)'
-    config.add_sort_field 'url asc, crawl_date desc', :label => 'URL (ascending)'
+    config.add_sort_field 'url desc, crawl_date desc', :label => 'URL (a-z)'
+    config.add_sort_field 'url asc, crawl_date desc', :label => 'URL (z-a)'
     config.add_sort_field 'content_type_norm asc', :label => 'content type (a-z)'
     config.add_sort_field 'content_type_norm desc', :label => 'content type (z-a)'
   end
