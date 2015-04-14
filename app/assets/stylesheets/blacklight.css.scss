@@ -4,6 +4,18 @@
 
 @import 'blacklight/blacklight';
 
+body {
+//  width: 970px;
+//  max-width: none !important;
+  min-width: 1000px;
+}
+
+.container {
+  width: 970px;
+  max-width: none !important;
+  min-width: 1000px;
+}
+
 .navbar-right {
   display: none;
 }

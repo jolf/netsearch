@@ -14,7 +14,7 @@ class CatalogController < ApplicationController
     ## Default parameters to send to solr for all search-like requests. See also SolrHelper#solr_search_params
     config.default_solr_params = { 
       :qt => 'search',
-      :rows => 10, 
+      :rows => 25,
       :defType => 'edismax',
       
 #      :hl => true,
@@ -25,22 +25,22 @@ class CatalogController < ApplicationController
       ## group.ngroups has a potential performance problem with large result sets as it has to counts all groups.
       ## the correct solution would probably be to modify the pager and other items when grouping is enabled so as
       ## not to need/display the count.
-      #:group => true,
-      #:'group.field' => 'url',
-      #:'group.ngroups' => true,
-      #:'group.limit' => 2,
-      #:'group.format' => 'simple'
+      # :group => true,
+      # :'group.field' => 'url',
+      # :'group.ngroups' => true,
+      # :'group.limit' => 1,
+#      :'group.format' => 'simple'
     }
-    
+
     # solr path which will be added to solr base url before the other solr params.
-    # config.solr_path = 'edismax' 
+    # config.solr_path = 'edismax'
     
     # items to show per page, each number in the array represent another option to choose from.
-    config.per_page = [10,20,50,100]
+    config.per_page = [25,50,100,250]
 
     # solr field configuration for search results/index views
-    config.index.title_field = 'title'
-    config.index.domain_field = 'domain'
+    # config.index.title_field = 'title'
+    config.index.title_field = 'url'
 
     # solr field configuration for document/show views
     config.show.title_field = 'title'
@@ -49,8 +49,8 @@ class CatalogController < ApplicationController
     # solr fields that will be treated as facets by the blacklight application
     # The ordering of the field names is the order of the display
     config.add_facet_field 'crawl_year', :label => 'Crawl Year', :single => true, sort: 'index', solr_params: { 'facet.mincount' => 1 }
-    config.add_facet_field 'domain', :label => 'Domain', :single => true, :limit => 10, solr_params: { 'facet.mincount' => 1 } 
-    config.add_facet_field 'content_type_norm', :label => 'Content Type', :single => true, :limit => 10, solr_params: { 'facet.mincount' => 1 } 
+    config.add_facet_field 'domain', :label => 'Domain', :single => true, :limit => 10, solr_params: { 'facet.mincount' => 1 }
+    config.add_facet_field 'content_type_norm', :label => 'Content Type', :single => true, :limit => 10, solr_params: { 'facet.mincount' => 1 }
     config.add_facet_field 'public_suffix', :label => 'Public Suffix', :single => true, :limit => 10, solr_params: { 'facet.mincount' => 1 }
 
     # Have BL send all facet field names to Solr, which has been the default
@@ -60,13 +60,15 @@ class CatalogController < ApplicationController
 
     # solr fields to be displayed in the index (search results) view
     # The ordering of the field names is the order of the display 
-    config.add_index_field 'id', :label => 'Complete index', :helper_method => :get_id_show_link
-    config.add_index_field 'content_type', :label => 'MimeType'
-    config.add_index_field 'content_type_full', :label => 'Full Content Type'
+    config.add_index_field 'content_type_norm'
     config.add_index_field 'crawl_date', :label => 'Crawl Date'
-    config.add_index_field 'content_text', :label => 'Content', :helper_method => :get_simple_context_text
-    config.add_index_field 'domain', :label => 'Domain'
-    config.add_index_field 'url', :label => 'Harvested URL', :helper_method => :get_url_link
+    config.add_index_field 'id', :label => 'Complete index', :helper_method => :get_id_show_link
+    config.add_index_field 'title'
+    # config.add_index_field 'content_type', :label => 'MimeType'
+    # config.add_index_field 'content_type_full', :label => 'Full Content Type'
+    # config.add_index_field 'content_text', :label => 'Content', :helper_method => :get_simple_context_text
+    # config.add_index_field 'domain', :label => 'Domain'
+    # config.add_index_field 'url', :label => 'Harvested URL', :helper_method => :get_url_link
 
     # solr fields to be displayed in the show (single result) view
     #   The ordering of the field names is the order of the display 
@@ -107,32 +109,6 @@ class CatalogController < ApplicationController
       }
     end
 
-    # Now we see how to over-ride Solr request handler defaults, in this
-    # case for a BL "search field", which is really a dismax aggregate
-    # of Solr search fields. 
-    
-    #config.add_search_field('title') do |field|
-    #  # solr_parameters hash are sent to Solr as ordinary url query params. 
-    #  field.solr_parameters = { :'spellcheck.dictionary' => 'title' }
-
-    #  # :solr_local_parameters will be sent using Solr LocalParams
-    #  # syntax, as eg {! qf=$title_qf }. This is neccesary to use
-    #  # Solr parameter de-referencing like $title_qf.
-    #  # See: http://wiki.apache.org/solr/LocalParams
-    #  field.solr_local_parameters = { 
-    #    :qf => '$title_qf',
-    #    :pf => '$title_pf'
-    #  }
-    #end
-    
-    #config.add_search_field('author') do |field|
-    #  field.solr_parameters = { :'spellcheck.dictionary' => 'author' }
-    #  field.solr_local_parameters = { 
-    #    :qf => '$author_qf',
-    #    :pf => '$author_pf'
-    #  }
-    #end
-
     # "sort results by" select (pulldown)
     # label in pulldown is followed by the name of the SOLR field to sort by and
     # whether the sort is ascending or descending (it must be asc or desc
@@ -140,8 +116,8 @@ class CatalogController < ApplicationController
     config.add_sort_field 'score desc', :label => 'relevance'
     config.add_sort_field 'crawl_date desc', :label => 'crawl date (decending)'
     config.add_sort_field 'crawl_date asc', :label => 'crawl date (ascending)'
-    config.add_sort_field 'url desc, crawl_date desc', :label => 'URL (a-z)'
-    config.add_sort_field 'url asc, crawl_date desc', :label => 'URL (z-a)'
+    config.add_sort_field 'domain desc, url desc, crawl_date desc', :label => 'URL (a-z)'
+    config.add_sort_field 'domain asc, url asc, crawl_date desc', :label => 'URL (z-a)'
     config.add_sort_field 'content_type_norm asc', :label => 'content type (a-z)'
     config.add_sort_field 'content_type_norm desc', :label => 'content type (z-a)'
   end

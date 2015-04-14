@@ -25,7 +25,7 @@ module ApplicationHelper
     # from expecting a route from the sub-parts of the id 
     # (e.g. id = '20110224111443/jcIZ7TNodzqOtB2rez8/Ug==' will have paths: '20110224111443' -> 'jcIZ7TNodzqOtB2rez8' -> 'Ug=='
     # where it is encoded as: id = '20110224111443&%2347;jcIZ7TNodzqOtB2rez8&%2347;Ug==', which just needs to be decoded when received.
-    link_to id, catalog_path(id.gsub('/', '&#47;'))
+    link_to 'index', catalog_path(id.gsub('/', '&#47;'))
   end
 
   def get_wayback_link args

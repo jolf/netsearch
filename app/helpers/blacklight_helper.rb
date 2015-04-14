@@ -12,9 +12,12 @@ module BlacklightHelper
 
     title = 'No title found'
     if doc[field] != nil
-      title = doc[field][0]
+      title = doc[field]
     elsif doc['url'] != nil
       title = doc['url']
+    end
+    if title.is_a? Array
+      title = title[0]
     end
 
     link_to title, url , :target => "_blank"

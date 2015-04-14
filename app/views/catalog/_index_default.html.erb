@@ -1,0 +1,14 @@
+<%# default partial to display solr document fields in catalog index view -%>
+<dl class="document-metadata dl-horizontal dl-invert">
+
+  <%# NETSEARCH: Shows fields on one line, instead of default listing. %>
+  <p>
+  <% index_fields(document).each do |field_name, field| -%>
+    <% if should_render_index_field? document, field %>
+	    <!--<%= render_index_field_label document, field: field_name %>-->
+        <%= render_index_field_value document, field: field_name %>,
+    <% end -%>
+  <% end -%>
+  </p>
+
+</dl>
