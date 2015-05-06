@@ -80,8 +80,8 @@ class CatalogController < ApplicationController
     # "fielded" search configuration. Used by pulldown among other places.
     config.add_search_field 'all_fields', :label => 'All Fields' do |field|
       field.solr_local_parameters = { 
-        :qf => 'title^100 content_text^10 url^3 text',
-        :pf => 'title^100 content_text^10 url^3 text'
+        :qf => 'title^100 content_text^10 url^3 text domain',
+        :pf => 'title^100 content_text^10 url^3 text domain'
       }
     end
     
