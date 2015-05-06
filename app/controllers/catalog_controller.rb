@@ -33,7 +33,7 @@ class CatalogController < ApplicationController
     }
 
     # solr path which will be added to solr base url before the other solr params.
-    # config.solr_path = 'edismax'
+    config.solr_path = 'edismax'
     
     # items to show per page, each number in the array represent another option to choose from.
     config.per_page = [25,50,100,250]
@@ -80,8 +80,8 @@ class CatalogController < ApplicationController
     # "fielded" search configuration. Used by pulldown among other places.
     config.add_search_field 'all_fields', :label => 'All Fields' do |field|
       field.solr_local_parameters = { 
-        :qf => 'title^100 content_text^10 url^3 text domain',
-        :pf => 'title^100 content_text^10 url^3 text domain'
+        :qf => 'title^100 content_text^10 url^3 text',
+        :pf => 'title^100 content_text^10 url^3 text'
       }
     end
     
